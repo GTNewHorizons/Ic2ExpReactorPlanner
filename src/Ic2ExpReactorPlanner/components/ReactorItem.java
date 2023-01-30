@@ -5,7 +5,6 @@
  */
 package Ic2ExpReactorPlanner.components;
 
-import Ic2ExpReactorPlanner.MaterialsList;
 import Ic2ExpReactorPlanner.Reactor;
 import java.awt.Image;
 import java.util.ResourceBundle;
@@ -20,14 +19,24 @@ public class ReactorItem {
     public final String baseName; // this is the non-localized version, for internal program use
     public final String name; // this is expected to be localized, for display usage.
     public final Image image;
-    protected double maxDamage; public double getMaxDamage() { return maxDamage; }
-    protected double maxHeat; public double getMaxHeat() { return maxHeat; }
-    public final String sourceMod; // for potentially adjusting controls based on whether the mod is in use, will be null to indicate the item is part of base IC2.
-    
+    protected double maxDamage;
+
+    public double getMaxDamage() {
+        return maxDamage;
+    }
+
+    protected double maxHeat;
+
+    public double getMaxHeat() {
+        return maxHeat;
+    }
+
+    public final String
+            sourceMod; // for potentially adjusting controls based on whether the mod is in use, will be null to
+    // indicate the item is part of base IC2.
+
     // Simulation setting values
     private double initialHeat = 0;
-
-    
 
     public double getInitialHeat() {
         return initialHeat;
@@ -38,6 +47,7 @@ public class ReactorItem {
             initialHeat = value;
         }
     }
+
     private int automationThreshold = 9000;
 
     public int getAutomationThreshold() {
@@ -49,6 +59,7 @@ public class ReactorItem {
             automationThreshold = value;
         }
     }
+
     private int reactorPause = 0;
 
     public int getReactorPause() {
@@ -60,49 +71,140 @@ public class ReactorItem {
             reactorPause = value;
         }
     }
-    
+
     // fields below here are not to be copied by the copy constructor.
-    
+
     // Parent reactor and position
     protected Reactor parent = null;
     protected int row = -10;
     protected int col = -10;
-    
+
     // Special variable for holding information about this item from last simulation.
-    // Usage of StringBuffer instead of StringBuilder is deliberate - this may be accessed by 
+    // Usage of StringBuffer instead of StringBuilder is deliberate - this may be accessed by
     // both the simulation worker thread and the event dispatch thread.
     public final StringBuffer info = new StringBuffer(1000);
-    
+
     // Calculated values - readable from outside, but only writable by subclasses.
-    protected double currentDamage = 0; public double getCurrentDamage() { return currentDamage; }
-    protected double currentHeat = 0; public double getCurrentHeat() { return currentHeat; }
-    protected double maxReachedHeat = 0; public double getMaxReachedHeat() { return maxReachedHeat; }
-    
-    protected double currentEUGenerated = 0; public double getCurrentEUGenerated() { return currentEUGenerated; }
-    protected double minEUGenerated = Double.MAX_VALUE; public double getMinEUGenerated() { return minEUGenerated; }
-    protected double maxEUGenerated = 0; public double getMaxEUGenerated() { return maxEUGenerated; }
-    
-    protected double currentHeatGenerated = 0; public double getCurrentHeatGenerated() { return currentHeatGenerated; }
-    protected double minHeatGenerated = Double.MAX_VALUE; public double getMinHeatGenerated() { return minHeatGenerated; }
-    protected double maxHeatGenerated = 0; public double getMaxHeatGenerated() { return maxHeatGenerated; }
-    
-    protected double currentHullHeating = 0; public double getCurrentHullHeating() { return currentHullHeating; }
-    protected double currentComponentHeating = 0; public double getCurrentComponentHeating() { return currentComponentHeating; }
-    protected double currentHullCooling = 0; public double getCurrentHullCooling() { return currentHullCooling; }
-    protected double currentVentCooling = 0; public double getCurrentVentCooling() { return currentVentCooling; }
-    protected double bestVentCooling = 0; public double getBestVentCooling() { return bestVentCooling; }
-    
-    protected double currentCellCooling = 0; public double getCurrentCellCooling() { return currentCellCooling; }
-    protected double bestCellCooling = 0; public double getBestCellCooling() { return bestCellCooling; }
-    
-    protected double currentCondensatorCooling = 0; public double getCurrentCondensatorCooling() { return currentCondensatorCooling; }
-    protected double bestCondensatorCooling = 0; public double getBestCondensatorCooling() { return bestCondensatorCooling; }
-    
+    protected double currentDamage = 0;
+
+    public double getCurrentDamage() {
+        return currentDamage;
+    }
+
+    protected double currentHeat = 0;
+
+    public double getCurrentHeat() {
+        return currentHeat;
+    }
+
+    protected double maxReachedHeat = 0;
+
+    public double getMaxReachedHeat() {
+        return maxReachedHeat;
+    }
+
+    protected double currentEUGenerated = 0;
+
+    public double getCurrentEUGenerated() {
+        return currentEUGenerated;
+    }
+
+    protected double minEUGenerated = Double.MAX_VALUE;
+
+    public double getMinEUGenerated() {
+        return minEUGenerated;
+    }
+
+    protected double maxEUGenerated = 0;
+
+    public double getMaxEUGenerated() {
+        return maxEUGenerated;
+    }
+
+    protected double currentHeatGenerated = 0;
+
+    public double getCurrentHeatGenerated() {
+        return currentHeatGenerated;
+    }
+
+    protected double minHeatGenerated = Double.MAX_VALUE;
+
+    public double getMinHeatGenerated() {
+        return minHeatGenerated;
+    }
+
+    protected double maxHeatGenerated = 0;
+
+    public double getMaxHeatGenerated() {
+        return maxHeatGenerated;
+    }
+
+    protected double currentHullHeating = 0;
+
+    public double getCurrentHullHeating() {
+        return currentHullHeating;
+    }
+
+    protected double currentComponentHeating = 0;
+
+    public double getCurrentComponentHeating() {
+        return currentComponentHeating;
+    }
+
+    protected double currentHullCooling = 0;
+
+    public double getCurrentHullCooling() {
+        return currentHullCooling;
+    }
+
+    protected double currentVentCooling = 0;
+
+    public double getCurrentVentCooling() {
+        return currentVentCooling;
+    }
+
+    protected double bestVentCooling = 0;
+
+    public double getBestVentCooling() {
+        return bestVentCooling;
+    }
+
+    protected double currentCellCooling = 0;
+
+    public double getCurrentCellCooling() {
+        return currentCellCooling;
+    }
+
+    protected double bestCellCooling = 0;
+
+    public double getBestCellCooling() {
+        return bestCellCooling;
+    }
+
+    protected double currentCondensatorCooling = 0;
+
+    public double getCurrentCondensatorCooling() {
+        return currentCondensatorCooling;
+    }
+
+    protected double bestCondensatorCooling = 0;
+
+    public double getBestCondensatorCooling() {
+        return bestCondensatorCooling;
+    }
+
     protected double explosionPowerMultiplier = 1;
-    
+
     protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("Ic2ExpReactorPlanner/Bundle");
-    
-    protected ReactorItem(final int id, final String baseName, final String name, final Image image, final double maxDamage, final double maxHeat, final String sourceMod) {
+
+    protected ReactorItem(
+            final int id,
+            final String baseName,
+            final String name,
+            final Image image,
+            final double maxDamage,
+            final double maxHeat,
+            final String sourceMod) {
         this.id = id;
         this.baseName = baseName;
         this.name = name;
@@ -110,14 +212,15 @@ public class ReactorItem {
         this.maxDamage = maxDamage;
         this.maxHeat = maxHeat;
         if (maxHeat > 1) {
-            automationThreshold = (int)(maxHeat * 0.9);
+            automationThreshold = (int) (maxHeat * 0.9);
         } else if (maxDamage > 1) {
-            automationThreshold = (int)(maxDamage * 1.1);
+            automationThreshold = (int) (maxDamage * 1.1);
         }
         this.sourceMod = sourceMod;
     }
-    
-    // Protected copy constructor for use by subclasses.  Generalized copying should be done with a method in ComponentFactory (which can check which subclass copy constructor to use).
+
+    // Protected copy constructor for use by subclasses.  Generalized copying should be done with a method in
+    // ComponentFactory (which can check which subclass copy constructor to use).
     protected ReactorItem(final ReactorItem other) {
         this.id = other.id;
         this.baseName = other.baseName;
@@ -139,7 +242,7 @@ public class ReactorItem {
     public String toString() {
         String result = name;
         if (initialHeat > 0) {
-            result += String.format(BUNDLE.getString("UI.InitialHeatDisplay"), (int)initialHeat);
+            result += String.format(BUNDLE.getString("UI.InitialHeatDisplay"), (int) initialHeat);
         }
         return result;
     }
@@ -152,7 +255,7 @@ public class ReactorItem {
         // maxHeat of 1 means this component never accepts heat (though it might take damage instead)
         return maxHeat > 1 && !isBroken();
     }
-    
+
     /**
      * Determines if this component can be cooled down, such as by a component heat vent.
      * @return true if this component can be cooled down, false otherwise.
@@ -160,7 +263,7 @@ public class ReactorItem {
     public boolean isCoolable() {
         return maxHeat > 1 && !(this instanceof Condensator);
     }
-    
+
     /**
      * Checks if this component acts as a neutron reflector, and boosts performance of adjacent fuel rods,
      * either by being a "neutron reflector" item or by being a fuel rod.
@@ -169,7 +272,7 @@ public class ReactorItem {
     public boolean isNeutronReflector() {
         return false;
     }
-    
+
     /**
      * Prepare for a new reactor tick.
      */
@@ -183,7 +286,7 @@ public class ReactorItem {
         currentEUGenerated = 0;
         currentHeatGenerated = 0;
     }
-    
+
     /**
      * Generate heat if appropriate for component type, and spread to reactor or adjacent cells.
      * @return the amount of heat generated by this component.
@@ -191,7 +294,7 @@ public class ReactorItem {
     public double generateHeat() {
         return 0.0;
     }
-    
+
     /**
      * Generate energy if appropriate for component type.
      * @return the number of EU generated by this component during the current reactor tick.
@@ -199,7 +302,7 @@ public class ReactorItem {
     public double generateEnergy() {
         return 0.0;
     }
-    
+
     /**
      * Dissipate (aka vent) heat if appropriate for component type.
      * @return the amount of heat successfully vented during the current reactor tick.
@@ -207,7 +310,7 @@ public class ReactorItem {
     public double dissipate() {
         return 0.0;
     }
-    
+
     /**
      * Transfer heat between component, neighbors, and/or reactor, if appropriate for component type.
      */
@@ -228,7 +331,7 @@ public class ReactorItem {
         this.row = row;
         this.col = col;
     }
-    
+
     /**
      * Removes this component from its reactor (if any), and applies changes to the reactor when removing this component if appropriate, such as for reactor plating.
      */
@@ -237,7 +340,7 @@ public class ReactorItem {
         this.row = -10;
         this.col = -10;
     }
-    
+
     /**
      * Resets heat to 0 (used when resetting simulation).
      */
@@ -252,7 +355,7 @@ public class ReactorItem {
         maxHeatGenerated = 0.0;
         maxReachedHeat = initialHeat;
     }
-    
+
     /**
      * Adjusts the component heat up or down
      * @param heat the amount of heat to adjust by (positive to add heat, negative to remove heat).
@@ -276,28 +379,29 @@ public class ReactorItem {
         }
         return heat;
     }
-    
+
     /**
      * Clears the damage back to 0 (used when resetting simulation, or replacing the component in an automation simulation).
      */
     public final void clearDamage() {
         currentDamage = 0.0;
     }
-    
+
     /**
-     * Applies damage to the component, as opposed to heat.  Mainly used for 
+     * Applies damage to the component, as opposed to heat.  Mainly used for
      * fuel rods and neutron reflectors that lose durability as the reactor runs,
      * but can't recover it via cooling.
      * @param damage the damage to apply (only used if positive).
      */
     public final void applyDamage(final double damage) {
-        // maxDamage of 1 is treated as meaning the component doesn't accept damage (though it might accept heat instead)
+        // maxDamage of 1 is treated as meaning the component doesn't accept damage (though it might accept heat
+        // instead)
         // if someone actually writes a mod with such a flimsy component, I might have to rethink this.
         if (maxDamage > 1 && damage > 0.0) {
             currentDamage += damage;
         }
     }
-    
+
     /**
      * Determines if this component is broken in the current tick of the simulation
      * @return true if the component has broken either from damage (e.g. neutron reflectors, fuel rods) or from heat (e.g. heat vents, coolant cells), false otherwise.
@@ -305,7 +409,7 @@ public class ReactorItem {
     public boolean isBroken() {
         return currentHeat >= getMaxHeat() || currentDamage >= getMaxDamage();
     }
-    
+
     /**
      * The number of fuel rods in this component (0 for non-fuel-rod components).
      * @return The number of fuel rods in this component, or 0 if this component has no fuel rods.
@@ -313,10 +417,10 @@ public class ReactorItem {
     public int getRodCount() {
         return 0;
     }
-    
+
     /**
      * Gets a value added in the formula for calculating explosion power.
-     * @return the additive value for explosion power caused by this component, 
+     * @return the additive value for explosion power caused by this component,
      * or 0 if this component doesn't affect the addition part of the explosion calculation.
      */
     public double getExplosionPowerOffset() {
@@ -324,11 +428,12 @@ public class ReactorItem {
             if (getRodCount() == 0 && isNeutronReflector()) {
                 return -1;
             }
-            return 2 * getRodCount(); // all known fuel rods (including those from GT) use this formula, and non-rod components return 0 for getRodCount
+            return 2 * getRodCount(); // all known fuel rods (including those from GT) use this formula, and non-rod
+            // components return 0 for getRodCount
         }
         return 0;
     }
-    
+
     /**
      * Gets a value multiplied in the formula for calculating explosion power.
      * @return the multiplier value for explosion power caused by this component,
@@ -355,7 +460,7 @@ public class ReactorItem {
     public double getHullCoolingCapacity() {
         return 0;
     }
-    
+
     /**
      * Gets the current "output" of this component, presumably for writing to
      * CSV data.  What this "output" means may vary by component type or reactor type.
@@ -364,7 +469,7 @@ public class ReactorItem {
     public double getCurrentOutput() {
         return 0;
     }
-    
+
     /**
      * Determines whether this component expects to produces some sort of output each reactor tick,
      * e.g. for purposes of tracking in a CSV file.
@@ -373,7 +478,7 @@ public class ReactorItem {
     public boolean producesOutput() {
         return getVentCoolingCapacity() > 0 || getRodCount() > 0;
     }
-    
+
     /**
      * Determines if this component needs input from a Reactor Coolant Injector.
      * Simply returns false for non-condensator items.
@@ -382,12 +487,11 @@ public class ReactorItem {
     public boolean needsCoolantInjected() {
         return false;
     }
-    
+
     /**
      * Simulates having a coolant item added by a Reactor Coolant Injector.
      */
     public void injectCoolant() {
         // do nothing by default.
     }
-    
 }

@@ -1,5 +1,31 @@
-apply plugin: 'java'
-apply plugin: 'application'
+import com.diffplug.blowdryer.Blowdryer
+
+import java.nio.file.Files
+import java.nio.file.Paths
+
+plugins {
+  id 'java'
+  id 'application'
+  id 'idea'
+  id 'eclipse'
+  id 'maven-publish'
+  id 'com.diffplug.spotless' version '6.7.2' apply false
+  id 'com.palantir.git-version' version '0.13.0' apply false // 0.13.0 is the last jvm8 supporting version
+}
+
+boolean disableSpotless = false
+boolean apiPackage = false
+String modrinthProjectId = "Ic2ExpReactorPlanner"
+
+if (project.file('.git/HEAD').isFile()) {
+    apply plugin: 'com.palantir.git-version'
+}
+
+project.extensions.add(Blowdryer, "Blowdryer", Blowdryer)
+if (!disableSpotless) {
+    apply plugin: 'com.diffplug.spotless'
+    apply from: Blowdryer.file('spotless.gradle')
+}
 
 sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -61,6 +87,38 @@ jar {
     }
 }
 
+// Fix Jenkins' Git: chmod a file should not be detected as a change and append a '.dirty' to the version
+try {
+    'git config core.fileMode false'.execute()
+}
+catch (Exception ignored) {
+    out.style(Style.Failure).println("git isn't installed at all")
+}
+
+// Pulls version first from the VERSION env and then git tag
+String identifiedVersion
+String versionOverride = System.getenv("VERSION") ?: null
+try {
+    identifiedVersion = versionOverride == null ? gitVersion() : versionOverride
+}
+catch (Exception ignored) {
+    out.style(Style.Failure).text(
+        'This mod must be version controlled by Git AND the repository must provide at least one tag,\n' +
+            'or the VERSION override must be set! ').style(Style.SuccessHeader).text('(Do NOT download from GitHub using the ZIP option, instead\n' +
+        'clone the repository, see ').style(Style.Info).text('https://gtnh.miraheze.org/wiki/Development').style(Style.SuccessHeader).println(' for details.)'
+    )
+    versionOverride = 'NO-GIT-TAG-SET'
+    identifiedVersion = versionOverride
+}
+version = identifiedVersion
+ext {
+    modVersion = identifiedVersion
+}
+
+if (identifiedVersion == versionOverride) {
+    out.style(Style.Failure).text('Override version to ').style(Style.Identifier).text(modVersion).style(Style.Failure).println('!\7')
+}
+
 task processAssets(type: Copy) {
     from('src') {
         include 'assets/**/*.png'
@@ -82,4 +140,32 @@ task processSource(type: Copy) {
 
 compileJava {
     source = processSource.outputs
+}
+
+publishing {
+    publications {
+        create("maven", MavenPublication) {
+            from components.java
+
+            if (apiPackage) {
+                artifact apiJar
+            }
+
+            groupId = System.getenv("ARTIFACT_GROUP_ID") ?: "com.github.GTNewHorizons"
+            artifactId = System.getenv("ARTIFACT_ID") ?: project.name
+            // Using the identified version, not project.version as it has the prepended 1.7.10
+            version = System.getenv("RELEASE_VERSION") ?: identifiedVersion
+        }
+    }
+
+    repositories {
+        maven {
+            url = "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases"
+            allowInsecureProtocol = true
+            credentials {
+                username = System.getenv("MAVEN_USER") ?: "NONE"
+                password = System.getenv("MAVEN_PASSWORD") ?: "NONE"
+            }
+        }
+    }
 }

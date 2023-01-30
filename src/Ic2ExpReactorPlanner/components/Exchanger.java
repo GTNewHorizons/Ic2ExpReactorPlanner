@@ -5,7 +5,6 @@
  */
 package Ic2ExpReactorPlanner.components;
 
-import Ic2ExpReactorPlanner.MaterialsList;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,22 +14,31 @@ import java.util.List;
  * @author Brian McCloud
  */
 public class Exchanger extends ReactorItem {
-    
+
     private final int switchSide;
     private final int switchReactor;
-    
-    public Exchanger(final int id, final String baseName, final String name, final Image image, final double maxDamage, final double maxHeat, final String sourceMod, final int switchSide, final int switchReactor) {
+
+    public Exchanger(
+            final int id,
+            final String baseName,
+            final String name,
+            final Image image,
+            final double maxDamage,
+            final double maxHeat,
+            final String sourceMod,
+            final int switchSide,
+            final int switchReactor) {
         super(id, baseName, name, image, maxDamage, maxHeat, sourceMod);
         this.switchSide = switchSide;
         this.switchReactor = switchReactor;
     }
-    
+
     public Exchanger(final Exchanger other) {
         super(other);
         this.switchSide = other.switchSide;
         this.switchReactor = other.switchReactor;
     }
-    
+
     @Override
     public void transfer() {
         List<ReactorItem> heatableNeighbors = new ArrayList<>(4);
@@ -112,10 +120,9 @@ public class Exchanger extends ReactorItem {
         }
         adjustCurrentHeat(myHeat);
     }
-    
+
     @Override
     public double getHullCoolingCapacity() {
         return switchReactor;
     }
-    
 }

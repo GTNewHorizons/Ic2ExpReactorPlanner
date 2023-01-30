@@ -5,7 +5,6 @@
  */
 package Ic2ExpReactorPlanner.components;
 
-import Ic2ExpReactorPlanner.MaterialsList;
 import Ic2ExpReactorPlanner.Reactor;
 import java.awt.Image;
 
@@ -16,21 +15,30 @@ import java.awt.Image;
  * @author Brian McCloud
  */
 public class Plating extends ReactorItem {
-    
+
     private final int heatAdjustment;
-    
-    public Plating(final int id, final String baseName, final String name, final Image image, final double maxDamage, final double maxHeat, final String sourceMod, final int heatAdjustment, final double explosionPowerMultiplier) {
+
+    public Plating(
+            final int id,
+            final String baseName,
+            final String name,
+            final Image image,
+            final double maxDamage,
+            final double maxHeat,
+            final String sourceMod,
+            final int heatAdjustment,
+            final double explosionPowerMultiplier) {
         super(id, baseName, name, image, maxDamage, maxHeat, sourceMod);
         this.heatAdjustment = heatAdjustment;
         this.explosionPowerMultiplier = explosionPowerMultiplier;
     }
-    
+
     public Plating(Plating other) {
         super(other);
         this.heatAdjustment = other.heatAdjustment;
         this.explosionPowerMultiplier = other.explosionPowerMultiplier;
     }
-    
+
     @Override
     public void addToReactor(final Reactor parent, final int row, final int col) {
         super.addToReactor(parent, row, col);
@@ -46,5 +54,4 @@ public class Plating extends ReactorItem {
         }
         super.removeFromReactor();
     }
-    
 }

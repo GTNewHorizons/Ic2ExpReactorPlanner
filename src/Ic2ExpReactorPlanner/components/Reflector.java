@@ -5,7 +5,6 @@
  */
 package Ic2ExpReactorPlanner.components;
 
-import Ic2ExpReactorPlanner.MaterialsList;
 import java.awt.Image;
 
 /**
@@ -13,17 +12,24 @@ import java.awt.Image;
  * @author Brian McCloud
  */
 public class Reflector extends ReactorItem {
-    
+
     private static String mcVersion = "1.12.2";
-    
-    public Reflector(final int id, final String baseName, final String name, final Image image, final double maxDamage, final double maxHeat, final String sourceMod) {
+
+    public Reflector(
+            final int id,
+            final String baseName,
+            final String name,
+            final Image image,
+            final double maxDamage,
+            final double maxHeat,
+            final String sourceMod) {
         super(id, baseName, name, image, maxDamage, maxHeat, sourceMod);
     }
-    
+
     public Reflector(final Reflector other) {
         super(other);
     }
-    
+
     @Override
     public boolean isNeutronReflector() {
         return !isBroken();
@@ -49,7 +55,7 @@ public class Reflector extends ReactorItem {
         }
         return 0;
     }
-    
+
     @Override
     public double getMaxDamage() {
         if (maxDamage > 1 && "1.7.10".equals(mcVersion)) {
@@ -57,7 +63,7 @@ public class Reflector extends ReactorItem {
         }
         return maxDamage;
     }
-    
+
     public static void setMcVersion(String newVersion) {
         mcVersion = newVersion;
     }

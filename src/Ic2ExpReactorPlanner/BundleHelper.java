@@ -14,13 +14,13 @@ import java.util.ResourceBundle;
  * @author Brian McCloud
  */
 public class BundleHelper {
-    
+
     private BundleHelper() {
         // private no-op constructor to prevent instantiation.
     }
-    
+
     private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("Ic2ExpReactorPlanner/Bundle");
-    
+
     /**
      * Looks up a key in the planner's resource bundle.
      * @param key the key to look up in the resource bundle.
@@ -29,7 +29,7 @@ public class BundleHelper {
     public static String getI18n(String key) {
         return BUNDLE.getString(key);
     }
-    
+
     /**
      * Uses a resource bundle entry as a format specifier.
      * @param key the key to look up in the resource bundle.
@@ -39,5 +39,4 @@ public class BundleHelper {
     public static String formatI18n(String key, Object... args) {
         return String.format(getI18n(key), args);
     }
-    
 }

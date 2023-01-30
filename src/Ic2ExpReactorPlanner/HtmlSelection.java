@@ -30,20 +30,16 @@ public class HtmlSelection implements Transferable, ClipboardOwner {
     private final DataFlavor htmlFlavor = new DataFlavor("text/html; charset=utf-8", null);
     private final DataFlavor plainFlavor = new DataFlavor("text/plain; charset=utf-8", null);
     private final DataFlavor rtfFlavor = new DataFlavor("text/rtf", null);
-    
+
     private final String data;
-    
+
     public HtmlSelection(final String data) {
         this.data = data;
     }
-    
+
     @Override
     public DataFlavor[] getTransferDataFlavors() {
-            return new DataFlavor[] {
-                htmlFlavor,
-                plainFlavor,
-                rtfFlavor
-            };
+        return new DataFlavor[] {htmlFlavor, plainFlavor, rtfFlavor};
     }
 
     @Override
@@ -56,7 +52,8 @@ public class HtmlSelection implements Transferable, ClipboardOwner {
         if (flavor.equals(htmlFlavor)) {
             return new ByteArrayInputStream(data.getBytes("utf-8"));
         } else if (flavor.equals(plainFlavor)) {
-            return new ByteArrayInputStream(data.replace("<br>", "\n").replaceAll("<[^>]+>", "").getBytes("utf-8"));
+            return new ByteArrayInputStream(
+                    data.replace("<br>", "\n").replaceAll("<[^>]+>", "").getBytes("utf-8"));
         } else if (flavor.equals(rtfFlavor)) {
             return new ByteArrayInputStream(convertToRTF(data).getBytes("us-ascii"));
         } else {
@@ -68,7 +65,7 @@ public class HtmlSelection implements Transferable, ClipboardOwner {
     public void lostOwnership(final Clipboard clipboard, final Transferable contents) {
         // no-op
     }
-    
+
     // modified from https://stackoverflow.com/questions/2091803/how-to-convert-html-to-rtf-in-java
     // only tested to handle html tags expected to be output by the planner's comparison feature.
     private static String convertToRTF(final String htmlStr) {
@@ -92,5 +89,4 @@ public class HtmlSelection implements Transferable, ClipboardOwner {
         }
         return rtfStr;
     }
-    
 }

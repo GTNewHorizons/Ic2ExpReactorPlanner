@@ -5,7 +5,6 @@
  */
 package Ic2ExpReactorPlanner.components;
 
-import Ic2ExpReactorPlanner.MaterialsList;
 import java.awt.Image;
 
 /**
@@ -13,20 +12,26 @@ import java.awt.Image;
  * @author Brian McCloud
  */
 public class CoolantCell extends ReactorItem {
-    
-    public CoolantCell(final int id, final String baseName, final String name, final Image image, final double maxDamage, final double maxHeat, final String sourceMod) {
+
+    public CoolantCell(
+            final int id,
+            final String baseName,
+            final String name,
+            final Image image,
+            final double maxDamage,
+            final double maxHeat,
+            final String sourceMod) {
         super(id, baseName, name, image, maxDamage, maxHeat, sourceMod);
     }
-    
+
     public CoolantCell(final CoolantCell other) {
         super(other);
     }
-    
+
     @Override
     public double adjustCurrentHeat(final double heat) {
         currentCellCooling += heat;
         bestCellCooling = Math.max(currentCellCooling, bestCellCooling);
         return super.adjustCurrentHeat(heat);
     }
-    
 }

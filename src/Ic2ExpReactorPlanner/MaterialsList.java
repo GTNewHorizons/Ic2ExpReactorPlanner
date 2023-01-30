@@ -1,6 +1,7 @@
 package Ic2ExpReactorPlanner;
 
 import static Ic2ExpReactorPlanner.BundleHelper.getI18n;
+
 import Ic2ExpReactorPlanner.components.ReactorItem;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -12,12 +13,12 @@ import java.util.*;
 public final class MaterialsList {
 
     private final SortedMap<String, Double> materials = new TreeMap<>();
-    
+
     private static boolean useGTRecipes = false;
     private static boolean useUfcForCoolantCells = false;
     private static boolean expandAdvancedAlloy = false;
     private static String gtVersion = "none";
-    
+
     // pre-load localized material names as constants to make code more readable.
     public static final String ALUMINIUM = getI18n("MaterialName.Aluminium");
     public static final String BERYLLIUM = getI18n("MaterialName.Beryllium");
@@ -29,10 +30,11 @@ public final class MaterialsList {
     public static final String COPPER = getI18n("MaterialName.Copper");
     public static final String DIAMOND = getI18n("MaterialName.Diamond");
     public static final String DISTILLED_WATER = getI18n("MaterialName.DistilledWater");
-    // Since GT 5.09 allows different materials for making the "empty cell" (steel, tin, or PTFE), it is treated as a primitive material for GT recipes instead of a crafted item that can be further broken down.
+    // Since GT 5.09 allows different materials for making the "empty cell" (steel, tin, or PTFE), it is treated as a
+    // primitive material for GT recipes instead of a crafted item that can be further broken down.
     public static final String EMPTY_CELL = getI18n("MaterialName.EmptyCell");
     public static final String ENRICHEDNAQUADAH = getI18n("MaterialName.EnrichedNaquadah");
-    public static final String FLUXEDELECTRUM = getI18n("MaterialName.FluxedElectrum");//too long
+    public static final String FLUXEDELECTRUM = getI18n("MaterialName.FluxedElectrum"); // too long
     public static final String GOLD = getI18n("MaterialName.Gold");
     public static final String GRAPHITE = getI18n("MaterialName.Graphite");
     public static final String GLASS = getI18n("MaterialName.Glass");
@@ -44,15 +46,15 @@ public final class MaterialsList {
     public static final String LEAD = getI18n("MaterialName.Lead");
     public static final String LEDOXDUST = getI18n("MaterialName.LedoxDust");
     public static final String MOX = getI18n("MaterialName.MoxFuel");
-    public static final String NAQUADRIA = getI18n("MaterialName.Naquadria");    
+    public static final String NAQUADRIA = getI18n("MaterialName.Naquadria");
     public static final String PLATINUM = getI18n("MaterialName.Platinum");
     public static final String POTASSIUM = getI18n("MaterialName.Potassium");
     public static final String REDSTONE = getI18n("MaterialName.Redstone");
-    public static final String REINFORCEDGLASS = getI18n("MaterialName.ReinforcedGlass");//alt recipes
+    public static final String REINFORCEDGLASS = getI18n("MaterialName.ReinforcedGlass"); // alt recipes
     public static final String RUBBER = getI18n("MaterialName.Rubber");
     public static final String SODIUM = getI18n("MaterialName.Sodium");
     public static final String THORIUM = getI18n("MaterialName.Thorium");
-    public static final String TIBERIUM = getI18n("MaterialName.Tiberium");        
+    public static final String TIBERIUM = getI18n("MaterialName.Tiberium");
     public static final String TIN = getI18n("MaterialName.Tin");
     public static final String TUNGSTEN = getI18n("MaterialName.Tungsten");
     public static final String URANIUM = getI18n("MaterialName.UraniumFuel");
@@ -72,8 +74,9 @@ public final class MaterialsList {
     public static MaterialsList alloy = new MaterialsList(getI18n("MaterialName.AdvancedAlloy"));
     public static MaterialsList coolantCell = new MaterialsList(1.0 / 3, TIN, DISTILLED_WATER, LAPIS);
     public static MaterialsList iridiumPlate = new MaterialsList(4, IRIDIUM, 4, alloy, DIAMOND);
-    
-    // some materials lists for crafted items that are part of reactor components without themselves being reactor components.
+
+    // some materials lists for crafted items that are part of reactor components without themselves being reactor
+    // components.
     public static final MaterialsList TIN_ITEM_CASING = new MaterialsList(0.5, TIN);
     public static final MaterialsList COIL = new MaterialsList(IRON, 8.0 / 3, COPPER);
     public static final MaterialsList ELECTRIC_MOTOR = new MaterialsList(IRON, 2, COIL, 2, TIN_ITEM_CASING);
@@ -81,16 +84,15 @@ public final class MaterialsList {
     public static final MaterialsList GLASS_PANE = new MaterialsList(6.0 / 16, GLASS);
     public static final MaterialsList TIN_ALLOY = new MaterialsList(0.5, TIN, 0.5, IRON);
 
-
     private static Map<String, MaterialsList> componentMaterialsMap = buildComponentMaterialsMap();
-    
+
     /**
      * Creates an empty materials list.
      */
     public MaterialsList() {
         // fields are initialized when declared, so no code is needed in this constructor.
     }
-    
+
     /**
      * Creates a materials list with the specified items in it.
      * @param materials the materials to add, which can be strings that each represent a single material or other MaterialsList objects, and either can be preceded by a number as a count.
@@ -99,7 +101,7 @@ public final class MaterialsList {
     public MaterialsList(Object... materials) {
         add(materials);
     }
-    
+
     /**
      * Adds the specified items to this materials list.
      * @param materials the materials to add, which can be strings that each represent a single material or other MaterialsList objects, and either can be preceded by a number as a count.
@@ -109,7 +111,7 @@ public final class MaterialsList {
         double itemCount = 1;
         for (Object material : materials) {
             if (material instanceof String) {
-                final String materialName = (String)material;
+                final String materialName = (String) material;
                 if (this.materials.containsKey(materialName)) {
                     this.materials.put(materialName, this.materials.get(materialName) + itemCount);
                 } else {
@@ -117,11 +119,13 @@ public final class MaterialsList {
                 }
                 itemCount = 1;
             } else if (material instanceof Number) {
-                itemCount = ((Number)material).doubleValue();
+                itemCount = ((Number) material).doubleValue();
             } else if (material instanceof MaterialsList) {
-                for (Map.Entry<String, Double> entrySet : ((MaterialsList)material).materials.entrySet()) {
+                for (Map.Entry<String, Double> entrySet : ((MaterialsList) material).materials.entrySet()) {
                     if (this.materials.containsKey(entrySet.getKey())) {
-                        this.materials.put(entrySet.getKey(), this.materials.get(entrySet.getKey()) + itemCount * entrySet.getValue());
+                        this.materials.put(
+                                entrySet.getKey(),
+                                this.materials.get(entrySet.getKey()) + itemCount * entrySet.getValue());
                     } else {
                         this.materials.put(entrySet.getKey(), itemCount * entrySet.getValue());
                     }
@@ -129,8 +133,9 @@ public final class MaterialsList {
                 itemCount = 1;
             } else if (material == null) {
                 throw new NullPointerException(Arrays.toString(materials));
-            }  else {
-                throw new IllegalArgumentException("Invalid material type: " + material.getClass().getName());
+            } else {
+                throw new IllegalArgumentException(
+                        "Invalid material type: " + material.getClass().getName());
             }
         }
     }
@@ -142,11 +147,11 @@ public final class MaterialsList {
         for (Map.Entry<String, Double> entrySet : materials.entrySet()) {
             double count = entrySet.getValue();
             String formattedNumber = materialDecimalFormat.format(count);
-            result.append(String.format("%s %s\n", formattedNumber, entrySet.getKey())); //NOI18N
+            result.append(String.format("%s %s\n", formattedNumber, entrySet.getKey())); // NOI18N
         }
         return result.toString();
     }
-    
+
     public String buildComparisonString(MaterialsList rhs, boolean alwaysDiff) {
         StringBuilder result = new StringBuilder(1000);
         SortedSet<String> keys = new TreeSet<>(materials.keySet());
@@ -169,8 +174,11 @@ public final class MaterialsList {
                 color = "red";
             }
             if (alwaysDiff || left != right) {
-                result.append(String.format(getI18n("Comparison.MaterialsEntry"), color,
-                        comparisonDecimalFormat.format(left - right), key,
+                result.append(String.format(
+                        getI18n("Comparison.MaterialsEntry"),
+                        color,
+                        comparisonDecimalFormat.format(left - right),
+                        key,
                         simpleDecimalFormat.format(left),
                         simpleDecimalFormat.format(right)));
             }
@@ -187,7 +195,7 @@ public final class MaterialsList {
         }
         componentMaterialsMap = buildComponentMaterialsMap();
     }
-    
+
     public static void setExpandAdvancedAlloy(boolean value) {
         expandAdvancedAlloy = value;
         if (value) {
@@ -198,7 +206,7 @@ public final class MaterialsList {
         iridiumPlate = new MaterialsList(4, IRIDIUM, 4, alloy, DIAMOND);
         componentMaterialsMap = buildComponentMaterialsMap();
     }
-    
+
     public static void setGTVersion(String value) {
         gtVersion = value;
         if ("5.08".equals(value) || "5.09".equals(value)) {
@@ -223,13 +231,14 @@ public final class MaterialsList {
         iridiumPlate = new MaterialsList(4, IRIDIUM, 4, alloy, DIAMOND);
         componentMaterialsMap = buildComponentMaterialsMap();
     }
-    
+
     public static MaterialsList getMaterialsForComponent(ReactorItem component) {
         return componentMaterialsMap.get(component.baseName);
     }
-    
+
     private static Map<String, MaterialsList> buildComponentMaterialsMap() {
-        Map<String, MaterialsList> result = new HashMap<>(100);//result.put+2? Added 14, but I can't really tell if that's right
+        Map<String, MaterialsList> result =
+                new HashMap<>(100); // result.put+2? Added 14, but I can't really tell if that's right
         result.put("fuelRodUranium", new MaterialsList(IRON, URANIUM));
         result.put("dualFuelRodUranium", new MaterialsList(IRON, 2, result.get("fuelRodUranium")));
         result.put("quadFuelRodUranium", new MaterialsList(3, IRON, 2, COPPER, 4, result.get("fuelRodUranium")));
@@ -256,7 +265,9 @@ public final class MaterialsList {
         result.put("coolantCell30k", new MaterialsList(3, result.get("coolantCell10k"), 6, TIN));
         result.put("coolantCell60k", new MaterialsList(2, result.get("coolantCell30k"), 6, TIN, IRON));
         result.put("heatExchanger", new MaterialsList(basicCircuit, 3, TIN, 5, COPPER));
-        result.put("advancedHeatExchanger", new MaterialsList(2, result.get("heatExchanger"), 2, basicCircuit, COPPER, 4, LAPIS));
+        result.put(
+                "advancedHeatExchanger",
+                new MaterialsList(2, result.get("heatExchanger"), 2, basicCircuit, COPPER, 4, LAPIS));
         result.put("coreHeatExchanger", new MaterialsList(result.get("heatExchanger"), 8, COPPER));
         result.put("componentHeatExchanger", new MaterialsList(result.get("heatExchanger"), 4, GOLD));
         result.put("reactorPlating", new MaterialsList(LEAD, alloy));
@@ -266,18 +277,33 @@ public final class MaterialsList {
         } else {
             result.put("containmentReactorPlating", new MaterialsList(result.get("reactorPlating"), 2, alloy));
         }
-        result.put("rshCondensator", new MaterialsList(result.get("heatVent"), result.get("heatExchanger"), 7, REDSTONE));
-        result.put("lzhCondensator", new MaterialsList(2, result.get("rshCondensator"), result.get("reactorHeatVent"), result.get("coreHeatExchanger"), 9, LAPIS, 4, REDSTONE));
+        result.put(
+                "rshCondensator", new MaterialsList(result.get("heatVent"), result.get("heatExchanger"), 7, REDSTONE));
+        result.put(
+                "lzhCondensator",
+                new MaterialsList(
+                        2,
+                        result.get("rshCondensator"),
+                        result.get("reactorHeatVent"),
+                        result.get("coreHeatExchanger"),
+                        9,
+                        LAPIS,
+                        4,
+                        REDSTONE));
         result.put("fuelRodThorium", new MaterialsList(IRON, 3, THORIUM));
         result.put("dualFuelRodThorium", new MaterialsList(IRON, 2, result.get("fuelRodThorium")));
         result.put("quadFuelRodThorium", new MaterialsList(3, IRON, 2, COPPER, 4, result.get("fuelRodThorium")));
         result.put("coolantCellHelium60k", new MaterialsList(EMPTY_CELL, HELIUM, 4, TIN));
         result.put("coolantCellHelium180k", new MaterialsList(3, result.get("coolantCellHelium60k"), 6, TIN));
-        result.put("coolantCellHelium360k", new MaterialsList(2, result.get("coolantCellHelium180k"), 6, TIN, 9, COPPER));
-        result.put("coolantCellNak60k", new MaterialsList(result.get("coolantCell10k"), 4, TIN, 2, POTASSIUM, 2, SODIUM));
+        result.put(
+                "coolantCellHelium360k", new MaterialsList(2, result.get("coolantCellHelium180k"), 6, TIN, 9, COPPER));
+        result.put(
+                "coolantCellNak60k", new MaterialsList(result.get("coolantCell10k"), 4, TIN, 2, POTASSIUM, 2, SODIUM));
         result.put("coolantCellNak180k", new MaterialsList(3, result.get("coolantCellNak60k"), 6, TIN));
         result.put("coolantCellNak360k", new MaterialsList(2, result.get("coolantCellNak180k"), 6, TIN, 9, COPPER));
-        result.put("iridiumNeutronReflector", new MaterialsList(6, result.get("thickNeutronReflector"), 18, COPPER, iridiumPlate));
+        result.put(
+                "iridiumNeutronReflector",
+                new MaterialsList(6, result.get("thickNeutronReflector"), 18, COPPER, iridiumPlate));
         result.put("fuelRodNaquadah", new MaterialsList(IRON, 3, ENRICHEDNAQUADAH));
         result.put("dualFuelRodNaquadah", new MaterialsList(IRON, 2, result.get("fuelRodNaquadah")));
         result.put("quadFuelRodNaquadah", new MaterialsList(3, IRON, 2, COPPER, 4, result.get("fuelRodNaquadah")));
@@ -289,34 +315,74 @@ public final class MaterialsList {
         result.put("quadFuelRodCesium", new MaterialsList(3, IRON, 2, COPPER, 4, result.get("fuelRodCesium")));
         result.put("fuelRodNaquadahGTNH", new MaterialsList(4, IRON, 4, TUNGSTEN, 1, PLATINUM, 3, ENRICHEDNAQUADAH));
         result.put("dualFuelRodNaquadahGTNH", new MaterialsList(IRON, TUNGSTEN, 2, result.get("fuelRodNaquadahGTNH")));
-        result.put("quadFuelRodNaquadahGTNH", new MaterialsList(3, IRON, 3, TUNGSTEN, 4, result.get("fuelRodNaquadahGTNH")));
+        result.put(
+                "quadFuelRodNaquadahGTNH",
+                new MaterialsList(3, IRON, 3, TUNGSTEN, 4, result.get("fuelRodNaquadahGTNH")));
         result.put("fuelRodNaquadria", new MaterialsList(4, IRON, 4, TUNGSTEN, 1, PLATINUM, 3, NAQUADRIA));
         result.put("dualFuelRodNaquadria", new MaterialsList(IRON, TUNGSTEN, 2, result.get("fuelRodNaquadria")));
         result.put("quadFuelRodNaquadria", new MaterialsList(3, IRON, 3, TUNGSTEN, 4, result.get("fuelRodNaquadria")));
         result.put("fuelRodTiberium", new MaterialsList(4, IRON, 4, TUNGSTEN, 1, PLATINUM, 3, TIBERIUM));
         result.put("dualFuelRodTiberium", new MaterialsList(IRON, TUNGSTEN, 2, result.get("fuelRodTiberium")));
         result.put("quadFuelRodTiberium", new MaterialsList(3, IRON, 3, TUNGSTEN, 4, result.get("fuelRodTiberium")));
-        result.put("fuelRodTheCore", new MaterialsList(96, IRON, 96, TUNGSTEN, 128, TIBERIUM, 32, result.get("fuelRodNaquadah")));
-        result.put("coolantCellSpace180k", new MaterialsList(0.5, CALLISTOICEDUST, 0.5, LEDOXDUST, 1000, DISTILLED_WATER, LAPIS, REINFORCEDGLASS, 2, IRON, 2, TUNGSTEN));
-        result.put("coolantCellSpace360k", new MaterialsList(1.5, IRON, 1.5, TUNGSTEN, 2, result.get("coolantCellSpace180k")));
-        result.put("coolantCellSpace540k", new MaterialsList(3, IRON, 3, TUNGSTEN, 3, result.get("coolantCellSpace180k")));
-        result.put("coolantCellSpace1080k", new MaterialsList(3, IRON, 3, TUNGSTEN, 9, FLUXEDELECTRUM, 3, result.get("coolantCellSpace540k")));
+        result.put(
+                "fuelRodTheCore",
+                new MaterialsList(96, IRON, 96, TUNGSTEN, 128, TIBERIUM, 32, result.get("fuelRodNaquadah")));
+        result.put(
+                "coolantCellSpace180k",
+                new MaterialsList(
+                        0.5,
+                        CALLISTOICEDUST,
+                        0.5,
+                        LEDOXDUST,
+                        1000,
+                        DISTILLED_WATER,
+                        LAPIS,
+                        REINFORCEDGLASS,
+                        2,
+                        IRON,
+                        2,
+                        TUNGSTEN));
+        result.put(
+                "coolantCellSpace360k",
+                new MaterialsList(1.5, IRON, 1.5, TUNGSTEN, 2, result.get("coolantCellSpace180k")));
+        result.put(
+                "coolantCellSpace540k", new MaterialsList(3, IRON, 3, TUNGSTEN, 3, result.get("coolantCellSpace180k")));
+        result.put(
+                "coolantCellSpace1080k",
+                new MaterialsList(3, IRON, 3, TUNGSTEN, 9, FLUXEDELECTRUM, 3, result.get("coolantCellSpace540k")));
         result.put("coolantCellNeutronium1G", new MaterialsList(72, NEUTRONIUM, 4, IRIDIUM));
         result.put("advancedFuelRod", new MaterialsList(4, ZIRCALOY_4, 1.0 / 2, ZIRCALOY_2));
-        result.put("fuelRodCompressedUranium", new MaterialsList(108, GRAPHITE, 36, U238, 9, TUNGSTEN, 9, CARBON, result.get("advancedFuelRod")));
-        result.put("dualFuelRodCompressedUranium", new MaterialsList(2, result.get("fuelRodCompressedUranium"), 2, ZIRCALOY_2));
-        result.put("quadFuelRodCompressedUranium", new MaterialsList(2, result.get("dualFuelRodCompressedUranium"), 2, ZIRCALOY_2));
-        result.put("fuelRodCompressedPlutonium", new MaterialsList(45, Pu239, 9, U238, 36, CARBON, 18, HSS_S, result.get("advancedFuelRod")));
-        result.put("dualFuelRodCompressedPlutonium", new MaterialsList(2, result.get("fuelRodCompressedPlutonium"), 2, ZIRCALOY_2));
-        result.put("quadFuelRodCompressedPlutonium", new MaterialsList(2, result.get("dualFuelRodCompressedPlutonium"), 2, ZIRCALOY_2));
+        result.put(
+                "fuelRodCompressedUranium",
+                new MaterialsList(108, GRAPHITE, 36, U238, 9, TUNGSTEN, 9, CARBON, result.get("advancedFuelRod")));
+        result.put(
+                "dualFuelRodCompressedUranium",
+                new MaterialsList(2, result.get("fuelRodCompressedUranium"), 2, ZIRCALOY_2));
+        result.put(
+                "quadFuelRodCompressedUranium",
+                new MaterialsList(2, result.get("dualFuelRodCompressedUranium"), 2, ZIRCALOY_2));
+        result.put(
+                "fuelRodCompressedPlutonium",
+                new MaterialsList(45, Pu239, 9, U238, 36, CARBON, 18, HSS_S, result.get("advancedFuelRod")));
+        result.put(
+                "dualFuelRodCompressedPlutonium",
+                new MaterialsList(2, result.get("fuelRodCompressedPlutonium"), 2, ZIRCALOY_2));
+        result.put(
+                "quadFuelRodCompressedPlutonium",
+                new MaterialsList(2, result.get("dualFuelRodCompressedPlutonium"), 2, ZIRCALOY_2));
         result.put("fuelRodLiquidUranium", new MaterialsList(250, LIQUID_URANIUM, result.get("advancedFuelRod")));
         result.put("dualFuelRodLiquidUranium", new MaterialsList(2, result.get("fuelRodLiquidUranium"), 2, ZIRCALOY_2));
-        result.put("quadFuelRodLiquidUranium", new MaterialsList(2, result.get("dualFuelRodLiquidUranium"), 2, ZIRCALOY_2));
+        result.put(
+                "quadFuelRodLiquidUranium",
+                new MaterialsList(2, result.get("dualFuelRodLiquidUranium"), 2, ZIRCALOY_2));
         result.put("fuelRodLiquidPlutonium", new MaterialsList(250, LIQUID_PLUTONIUM, result.get("advancedFuelRod")));
-        result.put("dualFuelRodLiquidPlutonium", new MaterialsList(2, result.get("fuelRodLiquidPlutonium"), 2, ZIRCALOY_2));
-        result.put("quadFuelRodLiquidPlutonium", new MaterialsList(2, result.get("fuelRodLiquidPlutonium"), 2, ZIRCALOY_2));
-        result.put("fuelRodGlowstone", new MaterialsList(9, GLOWSTONE, 250 , HELIUM));
+        result.put(
+                "dualFuelRodLiquidPlutonium",
+                new MaterialsList(2, result.get("fuelRodLiquidPlutonium"), 2, ZIRCALOY_2));
+        result.put(
+                "quadFuelRodLiquidPlutonium",
+                new MaterialsList(2, result.get("fuelRodLiquidPlutonium"), 2, ZIRCALOY_2));
+        result.put("fuelRodGlowstone", new MaterialsList(9, GLOWSTONE, 250, HELIUM));
         return result;
     }
-    
 }

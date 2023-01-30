@@ -5,7 +5,6 @@
  */
 package Ic2ExpReactorPlanner.components;
 
-import Ic2ExpReactorPlanner.MaterialsList;
 import java.awt.Image;
 
 /**
@@ -13,15 +12,22 @@ import java.awt.Image;
  * @author Brian McCloud
  */
 public class Condensator extends ReactorItem {
-    
-    public Condensator(final int id, final String baseName, final String name, final Image image, final double maxDamage, final double maxHeat, final String sourceMod) {
+
+    public Condensator(
+            final int id,
+            final String baseName,
+            final String name,
+            final Image image,
+            final double maxDamage,
+            final double maxHeat,
+            final String sourceMod) {
         super(id, baseName, name, image, maxDamage, maxHeat, sourceMod);
     }
-    
+
     public Condensator(final Condensator other) {
         super(other);
     }
-    
+
     @Override
     public double adjustCurrentHeat(final double heat) {
         if (heat < 0.0) {
@@ -40,10 +46,9 @@ public class Condensator extends ReactorItem {
     public boolean needsCoolantInjected() {
         return currentHeat > 0.85 * getMaxHeat();
     }
-    
+
     @Override
     public void injectCoolant() {
         currentHeat = 0;
     }
-
 }

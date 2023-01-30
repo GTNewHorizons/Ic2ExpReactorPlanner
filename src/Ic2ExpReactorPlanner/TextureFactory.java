@@ -21,11 +21,11 @@ import javax.imageio.ImageIO;
  * @author Brian McCloud
  */
 public class TextureFactory {
-    
-    private TextureFactory() { }
-    
+
+    private TextureFactory() {}
+
     private static final ZipFile TEXTURE_PACK = getTexturePackZip();
-    
+
     // paths within the texture pack zip to check for the texture images.
     private static final String[] ASSET_PATHS = {
         "",
@@ -37,7 +37,7 @@ public class TextureFactory {
         "assets/gtnh/textures/items/",
         "assets/goodgenerator/textures/items/",
     };
-    
+
     public static Image getImage(String... imageNames) {
         BufferedImage result = null;
         if (TEXTURE_PACK != null) {
@@ -56,7 +56,7 @@ public class TextureFactory {
                 }
             }
         }
-                
+
         for (String asset_path : ASSET_PATHS) {
             if (result == null && TextureFactory.class.getResource("/" + asset_path + imageNames[0]) != null) {
                 try (InputStream stream = TextureFactory.class.getResourceAsStream("/" + asset_path + imageNames[0])) {
@@ -68,7 +68,7 @@ public class TextureFactory {
         }
         return result;
     }
-    
+
     private static ZipFile getTexturePackZip() {
         try (FileInputStream configStream = new FileInputStream("erpprefs.xml")) {
             Properties config = new Properties();
@@ -81,9 +81,9 @@ public class TextureFactory {
         } catch (FileNotFoundException ex) {
             // ignore, this might just mean the file hasn't been created yet.
         } catch (IOException | NullPointerException ex) {
-            // ignore, security settings or whatever preventing reading the xml file (or resource pack zip) should not stop the planner from running.
+            // ignore, security settings or whatever preventing reading the xml file (or resource pack zip) should not
+            // stop the planner from running.
         }
         return null;
     }
-    
 }

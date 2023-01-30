@@ -18,10 +18,11 @@ import javax.swing.JTextArea;
  * @author Brian McCloud
  */
 public class ExceptionDialogDisplay implements Thread.UncaughtExceptionHandler {
-    
+
     public static void showExceptionDialog(final Throwable e) {
         // Modified from https://stackoverflow.com/questions/14011492/text-wrap-in-joptionpane/14011536#14011536
-        // also used https://stackoverflow.com/questions/4812570/how-to-store-printstacktrace-into-a-string/4812589#4812589
+        // also used
+        // https://stackoverflow.com/questions/4812570/how-to-store-printstacktrace-into-a-string/4812589#4812589
         StringWriter errors = new StringWriter(5000);
         e.printStackTrace(new PrintWriter(errors));
         JTextArea jta = new JTextArea(errors.toString());
@@ -32,12 +33,11 @@ public class ExceptionDialogDisplay implements Thread.UncaughtExceptionHandler {
                 return new Dimension(480, 320);
             }
         };
-        JOptionPane.showMessageDialog(null, jsp, "Error", JOptionPane.ERROR_MESSAGE); //NOI18N
+        JOptionPane.showMessageDialog(null, jsp, "Error", JOptionPane.ERROR_MESSAGE); // NOI18N
     }
 
     @Override
     public void uncaughtException(final Thread t, final Throwable e) {
         showExceptionDialog(e);
     }
-    
 }
