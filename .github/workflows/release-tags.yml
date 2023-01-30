@@ -4,6 +4,7 @@
 name: Release tagged build
 
 on:
+  workflow_dispatch:
   workflow_call:
     secrets:
       MAVEN_USER:
