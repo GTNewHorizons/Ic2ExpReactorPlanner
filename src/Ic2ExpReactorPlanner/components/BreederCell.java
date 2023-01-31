@@ -32,20 +32,28 @@ public class BreederCell extends ReactorItem {
     public double generateHeat() {
         double targetDamage = 1 + parent.getCurrentHeat() / mHeatBonusStep * mHeatBonusMultiplier;
         ReactorItem component = parent.getComponentAt(row - 1, col);
-        if (component != null) {
-            applyDamage(targetDamage);
+        if (component instanceof FuelRod) {
+            for (int i = 0; i < component.getRodCount(); i++) {
+                applyDamage(targetDamage);
+            }
         }
         component = parent.getComponentAt(row, col + 1);
-        if (component != null) {
-            applyDamage(targetDamage);
+        if (component instanceof FuelRod) {
+            for (int i = 0; i < component.getRodCount(); i++) {
+                applyDamage(targetDamage);
+            }
         }
         component = parent.getComponentAt(row + 1, col);
-        if (component != null) {
-            applyDamage(targetDamage);
+        if (component instanceof FuelRod) {
+            for (int i = 0; i < component.getRodCount(); i++) {
+                applyDamage(targetDamage);
+            }
         }
         component = parent.getComponentAt(row, col - 1);
-        if (component != null) {
-            applyDamage(targetDamage);
+        if (component instanceof FuelRod) {
+            for (int i = 0; i < component.getRodCount(); i++) {
+                applyDamage(targetDamage);
+            }
         }
         return 0;
     }
