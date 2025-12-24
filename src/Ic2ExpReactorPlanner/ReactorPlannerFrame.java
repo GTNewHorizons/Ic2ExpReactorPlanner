@@ -1441,7 +1441,7 @@ public class ReactorPlannerFrame extends javax.swing.JFrame {
         maxSimulationTicksLabel.setText(bundle.getString("UI.MaxSimulationTicks")); // NOI18N
         jPanel7.add(maxSimulationTicksLabel);
 
-        maxSimulationTicksSpinner.setModel(new javax.swing.SpinnerNumberModel(5000000, null, 5000000, 1));
+        maxSimulationTicksSpinner.setModel(new javax.swing.SpinnerNumberModel(5000000, 0, 5000000, 1));
         maxSimulationTicksSpinner.setToolTipText(bundle.getString("UI.MaxSimulationTicksTooltip")); // NOI18N
         maxSimulationTicksSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
